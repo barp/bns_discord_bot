@@ -2,6 +2,7 @@ import discord
 import asyncio
 import json
 import bns.characters
+import config
 
 client = discord.Client()
 
@@ -58,8 +59,7 @@ async def print_all_members(channel, members):
 
     print("Done retrieving information")
 
-async def print_single_member(channel, member):
-    member_ign = " ".join()
+async def print_single_member(channel, member_ign):
     tmp = await client.send_message(channel, 'Calculating info...')
     info = await bns.characters.get_character_info(member_ign)
     await client.edit_message(tmp, '```\n{}\n```'.format(format_member_info(member_ign, info)))
@@ -72,11 +72,13 @@ async def on_message(message):
         if len(command_parts) == 1:
             await print_all_members(message.channel, message.channel.server.members)
         elif len(command_parts) >= 2:
-            await print_single_member(message.channel, command_parts[1:])
+            member_ign =  " ".join(command_parts[1:])
+            print("Retrieving info for {}".format(member_ign))
+            await print_single_member(message.channel, member_ign)
 
     elif message.content.startswith("!sleep"):
         await asyncio.sleep(5)
         await client.send_message(message.channel, "Done sleeping")
 
 
-client.run("MjM3MTI5MjM3NDc4Mzc1NDI1.CuTL5A.G6st2BQXWB3IlXG4cv5AdUuKqaY")
+client.run(config.token)
