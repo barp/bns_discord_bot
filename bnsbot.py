@@ -43,11 +43,8 @@ async def on_member_remove(member):
 
 async def print_all_members(channel, members):
     tmp = await client.send_message(channel, 'Calculating info...')
-
     members_info = {}
-
     i = 0
-
     for member in members:
         member_ign = get_nickname(member)
         print("Calculating for member {}".format(member_ign))
