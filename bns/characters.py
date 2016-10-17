@@ -50,7 +50,7 @@ def get_guild(soup):
 
 extractors = collections.OrderedDict(
                 [('AP', get_ap),
-                 ('crate', get_crit_rate),
+                 ('crit', get_crit_rate),
                  ('cdmg', get_cdmg),
                  ('piercing', get_piercing),
                  ('accuracy', get_accuracy),
