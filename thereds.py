@@ -61,6 +61,12 @@ async def print_all_members(channel, members):
 
     print("Done retrieving information")
 
+async def print_single_member(channel, member):
+    member_ign = " ".join()
+    tmp = await client.send_message(channel, 'Calculating info...')
+    info = await bns.characters.get_character_info(member_ign)
+    await client.edit_message(tmp, '```\n{}\n```'.format(format_member_info(member_ign, info)))
+
 @client.event
 async def on_message(message):
     # TODO add help command
@@ -69,10 +75,7 @@ async def on_message(message):
         if len(command_parts) == 1:
             await print_all_members(message.channel, message.channel.server.members)
         elif len(command_parts) >= 2:
-            member_ign = " ".join(command_parts[1:])
-            tmp = await client.send_message(message.channel, 'Calculating info...')
-            info = await bns.characters.get_character_info(member_ign)
-            await client.edit_message(tmp, '```\n{}\n```'.format(format_member_info(member_ign, info)))
+            await print_single_member(message.channel, command_parts[1:])
 
     elif message.content.startswith("!sleep"):
         await asyncio.sleep(5)
