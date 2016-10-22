@@ -177,6 +177,16 @@ async def on_message(message):
             clan_state.add_member(" ".join(command_parts[1:]))
             clan_state.save_clan_state()
             await client.send_message(message.channel, "Done.")
+        elif message.content.startswith("!check_legendary_necklace"):
+            results = ""
+            for member in clan_state.get_clan_members():
+                print("Checking " + member + " for necklace")
+                info = await bns.characters.get_character_info(member)
+                if info and not info["has_legendary_necklace"]:
+                    print(member + " Doesnt have necklace")
+                    results += member + " - Doesnt have legendary necklace\n"
+
+            await client.send_message(message.channel, "```\n{}\n```".format(results))
         elif message.content.startswith("!sleep"):
             await asyncio.sleep(5)
             await client.send_message(message.channel, "Done sleeping")

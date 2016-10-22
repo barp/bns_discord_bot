@@ -48,13 +48,24 @@ def get_guild(soup):
     if guild:
         return guild[0].text
 
+def has_legendary_necklace(soup):
+    necklace = select(soup, "div.necklace")
+
+    necklace = select(necklace[0], "img")[0]
+
+    if necklace['item-data'].split(".")[0] == "3300981":
+        return True
+
+    return False
+
 extractors = collections.OrderedDict(
                 [('AP', get_ap),
                  ('crit', get_crit_rate),
                  ('cdmg', get_cdmg),
                  ('piercing', get_piercing),
                  ('accuracy', get_accuracy),
-                 ('guild', get_guild)])
+                 ('guild', get_guild),
+                 ('has_legendary_necklace', has_legendary_necklace)])
 
 async def get_character_info(name):
     async with aiohttp.ClientSession() as session:
