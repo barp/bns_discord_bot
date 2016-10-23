@@ -116,7 +116,7 @@ crit: {}
 cdmg: {}
 piercing: {}
 accuracy: {}
-necklace: {}""".format(ign, info["AP"], info["crit"], info["cdmg"], info["piercing"], info["accuracy"], info["neck_stage"] if info["neck_stage"] else "-----")
+necklace: Stage {}""".format(ign, info["AP"], info["crit"], info["cdmg"], info["piercing"], info["accuracy"], info["neck_stage"] if info["neck_stage"] else "-----")
 
 
 async def print_single_member(channel, member_ign):
