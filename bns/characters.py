@@ -48,13 +48,15 @@ def get_guild(soup):
     if guild:
         return guild[0].text
 
-def has_legendary_necklace(soup):
+def legendary_necklace_stage(soup):
     necklace = select(soup, "div.necklace")
 
     necklace = select(necklace[0], "img")[0]
 
-    if necklace['item-data'].split(".")[0] == "3300981":
-        return True
+    data_parts = necklace['item-data'].split(".")
+
+    if data_parts[0] == "3300981":
+        return data_parts[1]
 
     return False
 
@@ -65,7 +67,7 @@ extractors = collections.OrderedDict(
                  ('piercing', get_piercing),
                  ('accuracy', get_accuracy),
                  ('guild', get_guild),
-                 ('has_legendary_necklace', has_legendary_necklace)])
+                 ('neck_stage', legendary_necklace_stage)])
 
 async def get_character_info(name):
     async with aiohttp.ClientSession() as session:
