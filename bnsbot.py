@@ -68,16 +68,13 @@ def get_nickname(member):
         return str(member).split("#")[0]
 
 
-def format_member_info(ign, info):
-    # TODO better font formatting to messages
-    return "{}: {}".format(ign, json.dumps(info))
 
 
 def get_members_list_str(members):
     result = ""
     for ign, info in members.items():
         if info:
-            result += format_member_info(ign, info) + "\n"
+            result += "{}: {}".format(ign, json.dumps(info)) + "\n"
         else:
             result += "{}: Information does not exist\n".format(ign)
 
@@ -110,6 +107,17 @@ async def print_all_members(channel, members):
             i = 0
 
     print("Done retrieving information")
+
+
+def format_member_info(ign, info):
+    return """{}:
+AP: {}
+crit: {}
+cdmg: {}
+piercing: {}
+accuracy: {}
+necklace: {}""".format(ign, info["AP"], info["crit"], info["cdmg"], info["piercing"], info["accuracy"], info["neck_stage"] if info["neck_stage"] else "-----")
+
 
 async def print_single_member(channel, member_ign):
     tmp = await client.send_message(channel, 'Calculating info...')
