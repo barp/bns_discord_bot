@@ -116,7 +116,7 @@ crit: {}
 cdmg: {}
 piercing: {}
 accuracy: {}
-necklace: Stage {}""".format(ign, info["AP"], info["crit"], info["cdmg"], info["piercing"], info["accuracy"], info["neck_stage"] if info["neck_stage"] else "-----")
+necklace: {}""".format(ign, info["AP"], info["crit"], info["cdmg"], info["piercing"], info["accuracy"], "Stage {}".format(info["neck_stage"]) if info["neck_stage"] else "-----")
 
 
 async def print_single_member(channel, member_ign):
@@ -134,7 +134,7 @@ async def on_message(message):
         if message.content.startswith("!get_member_stats"):
             command_parts = message.content.split(" ")
             if len(command_parts) == 1:
-                await print_all_members(message.channel, message.channel.server.members)
+                await print_all_members(message.channel, clan_state.get_clan_members())
             elif len(command_parts) >= 2:
                 member_ign =  " ".join(command_parts[1:])
                 print("Retrieving info for {}".format(member_ign))
