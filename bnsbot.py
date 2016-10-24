@@ -96,7 +96,7 @@ async def print_all_members(channel, members):
     members_info = {}
     i = 0
     for member in members:
-        member_ign = get_nickname(member)
+        member_ign = member
         print("Calculating for member {}".format(member_ign))
         info = await bns.characters.get_character_info(member_ign)
         members_info[member_ign] = info
