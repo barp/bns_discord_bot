@@ -4,6 +4,7 @@ from urllib.parse import quote
 from bs4 import BeautifulSoup as Soup
 from soupselect import select
 import collections
+import asyncio
 
 def get_info_from_title(soup, name):
     stats = select(soup, "dt.stat-title")
@@ -51,7 +52,12 @@ def get_guild(soup):
 def legendary_necklace_stage(soup):
     necklace = select(soup, "div.necklace")
 
-    necklace = select(necklace[0], "img")[0]
+    necklace = select(necklace[0], "img")
+
+    if necklace:
+        necklace = necklace[0]
+    else:
+        return False
 
     data_parts = necklace['item-data'].split(".")
 
@@ -83,3 +89,11 @@ async def get_character_info(name):
                 return results
             else:
                 return None
+
+
+def test_get_character_info():
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(
+        asyncio.gather(get_character_info("Holmes Sherlock"))
+    )
+    loop.close()
