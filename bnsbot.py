@@ -49,7 +49,7 @@ class PermissionDeniedException(Exception):
 
 
 def check_permissions(user):
-    if user.id != config.bot_owner:
+    if user.id in config.bot_owner:
         raise PermissionDeniedException()
 
 
