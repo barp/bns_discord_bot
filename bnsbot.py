@@ -125,13 +125,15 @@ async def print_single_member(channel, member_ign):
     await client.edit_message(tmp, '```\n{}\n```'.format(format_member_info(member_ign, info)))
 
 
+def check_if_command(str, command):
+    return str == command or str.startswith(command + " ")
 
 
 @client.event
 async def on_message(message):
     # TODO add help command
     try:
-        if message.content.startswith("!get_member_stats "):
+        if check_if_command(message.content, "!get_member_stats"):
             command_parts = message.content.split(" ")
             if len(command_parts) == 1:
                 await print_all_members(message.channel, clan_state.get_clan_members())
@@ -140,9 +142,9 @@ async def on_message(message):
                 print("Retrieving info for {}".format(member_ign))
                 await print_single_member(message.channel, member_ign)
 
-        elif message.content.startswith("!get_user_id "):
+        elif check_if_command(message.content, "!get_user_id"):
             await client.send_message(message.channel, message.author.id)
-        elif message.content.startswith("!create_clan_members_list_from_server"):
+        elif check_if_command(message.content, "!create_clan_members_list_from_server"):
             check_permissions(message.author)
             print("Recording current clan members")
             for member in message.channel.server.members:
@@ -151,21 +153,21 @@ async def on_message(message):
 
             await client.send_message(message.channel, "Done.")
 
-        elif message.content.startswith("!print_members "):
+        elif check_if_command(message.content, "!print_members"):
             results = ""
             for member in clan_state.get_clan_members():
                 results += member + "\n"
 
             await client.send_message(message.channel, "```\n{}\n```".format(results))
-        elif message.content.startswith("!set_clan_name "):
+        elif check_if_command(message.content, "!set_clan_name"):
             check_permissions(message.author)
             command_parts = message.content.split(" ")
             clan_state.set_clan_name(" ".join(command_parts[1:]))
             clan_state.save_clan_state()
             await client.send_message(message.channel, "Done.")
-        elif message.content.startswith("!get_clan_name "):
+        elif check_if_command(message.content, "!get_clan_name"):
             await client.send_message(message.channel, clan_state.get_clan_name())
-        elif message.content.startswith("!who_left_clan "):
+        elif check_if_command(message.content, "!who_left_clan"):
             print("Checking who left clan")
             results = ""
             for member_ign in clan_state.get_clan_members():
@@ -174,18 +176,18 @@ async def on_message(message):
                     results += member_ign + "\n"
                     print(member_ign)
             await client.send_message(message.channel, "```\n{}\n```".format(results))
-        elif message.content.startswith("!remove_member "):
+        elif check_if_command(message.content, "!remove_member"):
             check_permissions(message.author)
             command_parts = message.content.split(" ")
             clan_state.remove_member(" ".join(command_parts[1:]))
             clan_state.save_clan_state()
-        elif message.content.startswith("!add_member "):
+        elif check_if_command(message.content, "!add_member"):
             check_permissions(message.author)
             command_parts = message.content.split(" ")
             clan_state.add_member(" ".join(command_parts[1:]))
             clan_state.save_clan_state()
             await client.send_message(message.channel, "Done.")
-        elif message.content.startswith("!check_legendary_necklace "):
+        elif check_if_command(message.content, "!check_legendary_necklace"):
             results = ""
             for member in clan_state.get_clan_members():
                 print("Checking " + member + " for necklace")
@@ -195,7 +197,7 @@ async def on_message(message):
                     results += member + "\n"
 
             await client.send_message(message.channel, "```\nMembers who doesnt have legendary necklace:\n{}\n```".format(results))
-        elif message.content.startswith("!sleep "):
+        elif check_if_command(message.content, "!sleep"):
             await asyncio.sleep(5)
             await client.send_message(message.channel, "Done sleeping")
     except PermissionDeniedException as e:
