@@ -49,7 +49,7 @@ class PermissionDeniedException(Exception):
 
 
 def check_permissions(user):
-    if user.id in config.bot_owner:
+    if all(user.id != x for x in config.bot_owner):
         raise PermissionDeniedException()
 
 
@@ -179,8 +179,13 @@ async def on_message(message):
         elif check_if_command(message.content, "!remove_member"):
             check_permissions(message.author)
             command_parts = message.content.split(" ")
-            clan_state.remove_member(" ".join(command_parts[1:]))
-            clan_state.save_clan_state()
+            try:
+                clan_state.remove_member(" ".join(command_parts[1:]))
+                clan_state.save_clan_state()
+                await client.send_message(message.channel, "Removed member")
+            except ValueError:
+                await client.send_message(message.channel, "Member name does not exists")
+
         elif check_if_command(message.content, "!add_member"):
             check_permissions(message.author)
             command_parts = message.content.split(" ")
