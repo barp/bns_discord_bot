@@ -203,7 +203,7 @@ async def on_message(message):
                     results += member + "\n"
                     member_count += 1
 
-            await client.send_message(message.channel, "```\nMembers who doesnt have legendary necklace:\n{}\n\nTotal of {} members```".format(results, member_count))
+            await client.send_message(message.channel, "```\nMembers who doesnt have legendary necklace:\n{}\n\n{} members from {} doesnt have necklace```".format(results, member_count))
 
         elif check_if_command(message.content, "!sleep"):
             await asyncio.sleep(5)
